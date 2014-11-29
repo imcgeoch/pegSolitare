@@ -1,4 +1,6 @@
 #include<stdio.h>
+#define SIZE 1000003
+
 
 typedef unsigned long board_t;
 board_t targetboard;
@@ -12,16 +14,15 @@ board_t[] soultion;
 
 typedef enum {NORTH,SOUTH,EAST,WEST} direction_t;
 
-struct _list_t {
+
+typedef struct {
 	board_t board;
 	struct list *next;
-}list_t;
+}List_t;
 
-struct _hashtable_t {
-	int size;
-	list_t **table;
-} hashtable_t;
+List_t[SIZE] table;
 
+hashtable
 board[35] solution;
 
 int main()
@@ -44,19 +45,15 @@ int move(board_t currentboard)
 //the heart of the program. moves through recursively, returns 1 or 0
 {
 
-int checkhash(currentboard)
-{
-//checks if board is in table, returns 1 or 0
-}
 
-int checkwin(currentboard)
+int checkwin(board_t currentboard)
 {
 //checks win contition, returns 1 or 0
 }
 
-int hash 
+int hash(board_t value)
 {
-//the hash function
+	return value%SIZE;
 }
 
 int squaresexist(board_t currentboard, int tomove, direction_t direction)
@@ -82,6 +79,18 @@ int edgemask(direction)
 void add2hash(board_t currentboard)
 {
 // adds currentboard to the table
+	h = hash(currentboard);
+	List_t *newcell;
+	newlist = malloc(sizeof(List_t))
+	newlist.board = currentboard;
+// to be completed
+	
+}
+
+list_t checkhash(board_t currentboard)
+{
+	//checks if currentboard is in hash
+
 }
 
 void transform(board_t currentboard, boart_t *compliments)
