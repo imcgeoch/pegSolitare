@@ -1,0 +1,63 @@
+variables:
+bitboards	
+	int64 - currentboard
+	int64 - targetboard
+	int64 - boardmask
+	int64 - startboard
+	int64 - leftedge, rightedge, etc. - mask to stay on board  
+	(first 49 bits of each bitboard represent squares in 7-7 grid.) 
+
+hash table of failed boards
+int64[] solution
+
+
+
+functions:
+void printboard(int64 board) - prints given board
+ 
+int move(currentboard) -makes legal move, returns 1 if sucessful
+						currentboard to hash and returns 0 if it can't
+						recursive.
+
+int checkhash(currentboard)
+int checkwin(currentboard)
+
+int board2hash(currentboard)
+
+int squaresempty(currentboard, movemarble, direction)
+int squaresexist(currentboard, movemarble, direction)
+
+int isemptymask(direction, movemarble)
+int edgemask(direction)
+
+void add2hash(currentboard)
+	int64[8]compliments
+void transform(currentboard, int64*compliments)
+
+--------process(scratch board)--------
+
+have a board state
+    check that we're not already in a failed line by comparing hash
+	find a move that could have led to it (best way to do this??)
+										  (how to store it??)
+			(move through board bit by bit. If it's a 1, try each direction)
+	        (check that the move is possible (occupied squares, edge)
+    if you hit a wall, try with another move that could have led to it. And
+		write that board and its equivalents to the failure hash table.   
+	if you reach a full board, hooray! you win! Write current board or move? 
+        to answer array.
+	if you find a board that fits neither of those conditions, recurse.
+
+Done? read out answer array.
+
+
+Finding moves:
+shift board one step right at a time, count the steps.
+if you find a one check that 7 and 14 (1 and 2) bits before (after) it are 0s
+  create mask, (board ^ mask == board) 
+also check that that bit & that bit of up(left,right,down)mask == 1
+  (possible square to make that move) board ^ mask % 2 to the bitplace == 1
+do that for every direction
+
+Storing moves?
+Is it even nessecary? simplest: int and char: start square and direction
