@@ -1,4 +1,5 @@
-variables:
+vshtable
+ariables:
 bitboards	
 	int64 - currentboard
 	int64 - targetboard
@@ -50,6 +51,8 @@ have a board state
 
 Done? read out answer array.
 
+			line+=l
+wer
 
 Finding moves:
 shift board one step right at a time, count the steps.
