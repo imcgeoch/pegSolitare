@@ -1,37 +1,34 @@
 #include<stdio.h>
+#include<stdlib.h>
+#include"pegSolitare.h"
 #define SIZE 1000003
 
 
 typedef unsigned long board_t;
 board_t targetboard = 0x1c3e7f777f3e1c;
 board_t startboard = 0x8000000;
-board_t northedgei = 0x1c3e6341000000;
-board_t southedgei = 0x41633e1c;
+board_t northedge = 0x1c3e6341000000;
+board_t southedge = 0x41633e1c;
 board_t eastedge = 0x18306060603018;
 board_t westedge = 0x18306060603018;
 
-board_t[] soultion;
-
-typedef enum {NORTH,SOUTH,EAST,WEST} direction_t;
+board_t solution[35];
 
 
-typedef struct {
-	board_t board;
-	struct list *next;
-}List_t;
 
-List_t[SIZE] table;
 
-hashtable
-board[35] solution;
+List_t *table[SIZE];
+
 
 int main()
 {
+	return 0;
 //exactly what it looks like
 }
 
 void printboard(board_t currentboard)
 {
+	return;
  // prints a given board in human-readable form
 }
 
@@ -60,8 +57,8 @@ int move(board_t currentboard)
 					return 1;
 				}
 			}
-			if (squaresexist(currentboard, i, SORTH) 
-                & squaresempty(currentboard, i, SORTH) == 1){			
+			if (squaresexist(currentboard, i, SOUTH) 
+                & squaresempty(currentboard, i, SOUTH) == 1){			
 				if (move(currentboard ^ 0x10101 << i-16) == 1){
 					add2solution(currentboard);
 					return 1;
@@ -135,15 +132,15 @@ board_t isemptymask(direction_t dir, int tomove)
 {
 // returns boardmask of squares that must be empty
 
-	switch(direction){
+	switch(dir){
 		case NORTH:
-			return 0x10100 << tomove; 
+			return (long)0x10100 << tomove; 
 		case SOUTH:
-			return 0x10100 << (tomove - 16);
+			return (long)0x10100 << (tomove - 16);
 		case EAST:
-			return 0x6 << (tomove -2);
+			return (long)0x6 << (tomove -2);
 		case WEST:
-			return 0x6 << tomove;
+			return (long)0x6 << tomove;
 	}
 
 }
@@ -171,21 +168,20 @@ void add2hash(board_t currentboard)
 	if (checkhash(currentboard) != NULL)
 		return;
 
-	board_t[8] compliments;
-	transform(currentboard, &compliments[0]);	
+	board_t compliments[8];
+//	transform(currentboard, &compliments[0]);	
 	for (int i =0; i < 8; i++){
 
-		h = hash(compliments[i]);
-		List_t *newcell;
-		newlist = malloc(sizeof(List_t));
-		newlist.board = compliments[i];
+		int h = hash(compliments[i]);
+		List_t *newlist = malloc(sizeof(List_t));
+		newlist->board = compliments[i];
 
-		newcell->next = table[h];
-		table[h] = newcell;
+		newlist->next = table[h];
+		table[h] = newlist;
 	}	
 }
 
-void add2soultion(board_t currentboard)
+void add2solution(board_t currentboard)
 {
 	for (int i = 0; i < 35; i++){
 		if (solution[i] == NULL){
@@ -195,11 +191,11 @@ void add2soultion(board_t currentboard)
 	}
 }
 
-list_t checkhash(board_t currentboard)
+List_t *checkhash(board_t currentboard)
 {
 	//checks if currentboard is in hash
-	for (List_t i = table[hash(currentbard)]; i != NULL; i = i->next){
-		if (i.board == currentboard)
+	for (List_t *i = table[hash(currentboard)]; i != NULL; i = i->next){
+		if (i->board == currentboard)
 			return i;
 	} 
 	return NULL;
