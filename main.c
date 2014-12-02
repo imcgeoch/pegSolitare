@@ -22,7 +22,7 @@ List_t *table[SIZE];
 
 int main()
 {
-	move(startboard);
+    move(startboard);
 	printanswer();
 
 	return 0;
@@ -70,7 +70,45 @@ int move(board_t currentboard)
 		return 1;
 	
 	}
-	for (int i = 0; i < 64; i ++){
+	board_t nextmove = currentboard;
+	int i = 0;
+	while (nextmove){
+		
+		nextmove >>= 1;
+		if (nextmove & 1 == 1){
+			if (squaresexist(currentboard, i , NORTH) 
+					& squaresempty (currentboard, i, NORTH) == 1){
+				if (move(currentboard ^ (0x10101 << i)) == 1){
+					add2solution(currentboard);
+					return 1;
+				}
+			}
+		}
+		
+		
+		if (squaresexist(currentboard, i, SOUTH) 
+                & squaresempty(currentboard, i, SOUTH) == 1){			
+			if (move(currentboard ^ (0x10101 << (i-16))) == 1){
+				add2solution(currentboard);
+				return 1;
+			}
+		}
+		if (squaresexist(currentboard, i, EAST) 
+               & squaresempty(currentboard, i, EAST) == 1){			
+			if (move(currentboard ^ (0x7 << (i-2))) == 1){
+				add2solution(currentboard);
+				return 1;
+			}
+		}
+		if (squaresexist(currentboard, i, WEST) 
+               & squaresempty(currentboard, i, WEST) == 1){			
+			if (move(currentboard ^ (0x7 << i)) == 1){
+				add2solution(currentboard);
+				return 1;
+			}
+		}
+	}
+/*	for (int i = 0; i < 64; i ++){
 		if ((currentboard >> i) & 1 == 1){
 			if (squaresexist(currentboard, i, NORTH) 
                 & squaresempty(currentboard, i, NORTH) == 1){			
@@ -102,6 +140,7 @@ int move(board_t currentboard)
 			}
 		}
 	}
+*/
 	add2hash(currentboard);
 	return 0;
 	
