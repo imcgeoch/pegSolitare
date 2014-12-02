@@ -22,12 +22,29 @@ List_t *table[SIZE];
 
 int main()
 {
+	move(startboard);
+	printanswer();
+
 	return 0;
 //exactly what it looks like
 }
 
 void printboard(board_t currentboard)
 {
+	int r = 0;
+	while (currentboard){
+		
+		if (currentboard & 1)
+			printf("0");
+		else 
+			printf("-");
+		currentboard >>= 1;
+		if (++r == 8){
+			r = 0;
+			printf("\n");
+		}
+	}
+	printf("\n");
 	return;
  // prints a given board in human-readable form
 }
@@ -35,11 +52,16 @@ void printboard(board_t currentboard)
 void printanswer()
 {
 	//pritns the answer
+	for (int i = 0; i < 35; i++){
+		printboard(solution[i]);
+	}
+
 }
 
 int move(board_t currentboard)
 {
 //the heart of the program. moves through recursively, returns 1 or 0
+	printboard(currentboard);
 	if (checkhash(currentboard) != NULL) 
 		return 0;
 	
@@ -52,28 +74,28 @@ int move(board_t currentboard)
 		if ((currentboard >> i) & 1 == 1){
 			if (squaresexist(currentboard, i, NORTH) 
                 & squaresempty(currentboard, i, NORTH) == 1){			
-				if (move(currentboard ^ 0x10101 << i) == 1){
+				if (move(currentboard ^ (0x10101 << i)) == 1){
 					add2solution(currentboard);
 					return 1;
 				}
 			}
 			if (squaresexist(currentboard, i, SOUTH) 
                 & squaresempty(currentboard, i, SOUTH) == 1){			
-				if (move(currentboard ^ 0x10101 << i-16) == 1){
+				if (move(currentboard ^ (0x10101 << (i-16))) == 1){
 					add2solution(currentboard);
 					return 1;
 				}
 			}
 			if (squaresexist(currentboard, i, EAST) 
                 & squaresempty(currentboard, i, EAST) == 1){			
-				if (move(currentboard ^ 0x7 << i-2) == 1){
+				if (move(currentboard ^ (0x7 << (i-2))) == 1){
 					add2solution(currentboard);
 					return 1;
 				}
 			}
 			if (squaresexist(currentboard, i, WEST) 
                 & squaresempty(currentboard, i, WEST) == 1){			
-				if (move(currentboard ^ 0x7 << i) == 1){
+				if (move(currentboard ^ (0x7 << i)) == 1){
 					add2solution(currentboard);
 					return 1;
 				}
@@ -147,6 +169,7 @@ board_t isemptymask(direction_t dir, int tomove)
 
 board_t edgemask(direction_t direction)
 {
+//	printf("direction called");
 //returns boardmask of squares that are too close to the edge
 	switch(direction){
 	case NORTH:
@@ -158,7 +181,7 @@ board_t edgemask(direction_t direction)
 	case WEST:
 		return westedge;
 	}
-
+	return 0;
 }
 
 void add2hash(board_t currentboard)
@@ -168,7 +191,7 @@ void add2hash(board_t currentboard)
 	if (checkhash(currentboard) != NULL)
 		return;
 
-	board_t compliments[8];
+/*	board_t compliments[8];
 //	transform(currentboard, &compliments[0]);	
 	for (int i =0; i < 8; i++){
 
@@ -179,6 +202,15 @@ void add2hash(board_t currentboard)
 		newlist->next = table[h];
 		table[h] = newlist;
 	}	
+*/
+		int h = hash(currentboard);
+		List_t *newlist = malloc(sizeof(List_t));
+		if (newlist == NULL)
+			return;	
+		newlist->board = currentboard;
+
+		newlist->next = table[h];
+		table[h] = newlist;
 }
 
 void add2solution(board_t currentboard)
