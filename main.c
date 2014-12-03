@@ -31,7 +31,7 @@ int main()
 void printboard(board_t currentboard)
 {
 	int r = 0;
-	while (currentboard){
+	for (int i=0; i<64; i++){ //while (currentboard){
 		
 		if (currentboard & 1)
 			printf("0");
@@ -66,8 +66,8 @@ int move(board_t currentboard)
 	//printboard(currentboard);
 	int a;
 	//scanf("%d", &a);
-	if (checkhash(currentboard) != NULL) 
-		return 0;
+	//if (checkhash(currentboard) != NULL) 
+	//	return 0;
 	
 	if (checkwin(currentboard) == 1){
 		add2solution(currentboard);
@@ -76,89 +76,63 @@ int move(board_t currentboard)
 	}
 	board_t nextmove = currentboard;
 	int i = 0;
-	while (nextmove ){
-	
+	while (nextmove > 0){
+		printf("%d\n", nextmove);	
 		nextmove >>= 1;
-	//	printboard(nextmove);		
 		i++;	
-//		printf("%d", i++);
 		if (nextmove & 1 == 1){
-//			printf("!!!\n");
+			printf("nextmove &1 ==1\n");
 			if (squaresexist(currentboard, i , NORTH) 
 					& squaresempty(currentboard, i, NORTH) == 1){
-	//			printf("hey");
-//,				printboard(currentboard);
-//				printboard((long)0x10101);
-//				printboard((long)0x10101 << i);
-//				printboard(currentboard ^ ((long)0x10101 <<i));
-	//			printf("yo\n");
-				if (move(currentboard ^ ((long)0x10101 << i)) == 1){
+				board_t newboard = currentboard ^ ((long)0x10101 << i);
+				if (newboard == currentboard)
+					printf("oh no!");
+				if (move(newboard) == 1){
 					add2solution(currentboard);
 					return 1;
 				}
 			}
 		
-		
-		
-		if (squaresexist(currentboard, i, SOUTH) 
-                & squaresempty(currentboard, i, SOUTH) == 1){
-//			printboard((long)0x10101 << (i-32));			
-			if (move(currentboard ^ ((long)0x10101 << (i-16))) == 1){
-				add2solution(currentboard);
-				return 1;
-			}
-		}
-		if (squaresexist(currentboard, i, WEST) 
-               & squaresempty(currentboard, i, WEST) == 1){
-//			printboard((long)0x7 << (i-2));			
-			if (move(currentboard ^ ((long)0x7 << (i-2))) == 1){
-				add2solution(currentboard);
-				return 1;
-			}
-		}
-		if (squaresexist(currentboard, i, EAST) 
-               & squaresempty(currentboard, i, EAST) == 1){			
-			if (move(currentboard ^ ((long)0x7 << i)) == 1){
-				add2solution(currentboard);
-				return 1;
-			}
-		}
-		}
-	}
-/*	for (int i = 0; i < 64; i ++){
-		if ((currentboard >> i) & 1 == 1){
-			if (squaresexist(currentboard, i, NORTH) 
-                & squaresempty(currentboard, i, NORTH) == 1){			
-				if (move(currentboard ^ (0x10101 << i)) == 1){
-					add2solution(currentboard);
-					return 1;
-				}
-			}
 			if (squaresexist(currentboard, i, SOUTH) 
-                & squaresempty(currentboard, i, SOUTH) == 1){			
-				if (move(currentboard ^ (0x10101 << (i-16))) == 1){
+            	    & squaresempty(currentboard, i, SOUTH) == 1){
+					board_t newboard = currentboard ^ ((long)0x10101 << (i-16));
+					if (newboard == currentboard)
+						printf("oh no!");
+					if (move(newboard) == 1){
 					add2solution(currentboard);
 					return 1;
 				}
 			}
-			if (squaresexist(currentboard, i, EAST) 
-                & squaresempty(currentboard, i, EAST) == 1){			
-				if (move(currentboard ^ (0x7 << (i-2))) == 1){
-					add2solution(currentboard);
-					return 1;
-				}
-			}
+
 			if (squaresexist(currentboard, i, WEST) 
-                & squaresempty(currentboard, i, WEST) == 1){			
-				if (move(currentboard ^ (0x7 << i)) == 1){
+    	           & squaresempty(currentboard, i, WEST) == 1){
+					board_t newboard = currentboard ^ ((long)0x7 << (i-2));
+					if (newboard == currentboard)
+						printf("oh no!");
+					if (move(newboard) == 1){
 					add2solution(currentboard);
 					return 1;
 				}
 			}
+
+			if (squaresexist(currentboard, i, EAST) 
+        	       & squaresempty(currentboard, i, EAST) == 1){			
+					board_t newboard = currentboard ^ ((long)0x7 << i);
+					if (newboard == currentboard)
+						printf("oh no!");
+					if (move(newboard) == 1){
+					add2solution(currentboard);
+					return 1;
+				}
+			}
+			printf("no if statements worked!\n");
 		}
+		else
+		printf("didn't look");
 	}
-*/
+
 	//add2hash(currentboard);
+	printf("made it out of loop!\n");
 	return 0;
 	
 
@@ -239,7 +213,7 @@ board_t isemptymask(direction_t dir, int tomove)
 
 board_t edgemask(direction_t direction)
 {
-//	printf("direction called");
+//	printf("direction called\n");
 //returns boardmask of squares that are too close to the edge
 	switch(direction){
 	case NORTH:
@@ -287,12 +261,13 @@ void add2hash(board_t currentboard)
 
 void add2solution(board_t currentboard)
 {
-	for (int i = 0; i < 35; i++){
+/*	for (int i = 0; i < 35; i++){
 		if (solution[i] == NULL){
 			solution[i] = currentboard;
 			return;	
 		}
 	}
+*/
 }
 
 List_t *checkhash(board_t currentboard)
