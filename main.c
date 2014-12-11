@@ -5,12 +5,12 @@
 
 
 typedef unsigned long board_t;
-board_t targetboard = 0x1c3e7f777f3e1c;
+board_t targetboard = 0x1c1c7f777f1c1c;
 board_t startboard = 0x8000000;
-board_t northedge = 0x1c3e6341000000;
-board_t southedge = 0x41633e1c;
-board_t eastedge = 0xc06030303060c;
-board_t westedge = 0x18306060603018;
+board_t northedge = 0x1c1c6363000000;
+board_t southedge = 0x63631c1c;
+board_t eastedge = 0xc0c0303030c0c;
+board_t westedge = 0x18186060601818;
 board_t solution[35];
 
 
@@ -67,7 +67,7 @@ int move(board_t currentboard)
 {
 //the heart of the program. moves through recursively, returns 1 or 0
 //	printf("moving!\n\n");
-	printboard(currentboard);
+//	printboard(currentboard);
 	
 //	printboard(currentboard);
 	int a;
@@ -270,13 +270,13 @@ void add2hash(board_t currentboard)
 
 void add2solution(board_t currentboard)
 {
-/*	for (int i = 0; i < 35; i++){
+	for (int i = 0; i < 35; i++){
 		if (solution[i] == NULL){
 			solution[i] = currentboard;
 			return;	
 		}
 	}
-*/
+
 }
 
 List_t *checkhash(board_t currentboard)
