@@ -1,17 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"pegSolitare.h"
+#include"boardsettings.h"
 #define SIZE 1000003
 
 
-typedef unsigned long board_t;
-board_t targetboard = 0x1c1c7f777f1c1c;
-board_t startboard = 0x8000000;
-board_t northedge = 0x1c1c6363000000;
-board_t southedge = 0x63631c1c;
-board_t eastedge = 0xc0c0303030c0c;
-board_t westedge = 0x18186060601818;
-board_t solution[32];
+board_t solution[NUMPEGS];
 
 List_t *table[SIZE];
 
@@ -47,7 +41,7 @@ void printboard(board_t currentboard)
 void printanswer()
 {
 	//pritns the answer
-	for (int i = 0; i < 32; i++){
+	for (int i = 0; i < NUMPEGS; i++){
 		printboard(solution[i]);
 	}
 
