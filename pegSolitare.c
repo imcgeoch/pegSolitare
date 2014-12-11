@@ -14,7 +14,6 @@ int main()
 {
 	move(startboard);
 	printanswer();
-
 	return 0;
 }
 
@@ -124,7 +123,7 @@ int checkwin(board_t currentboard)
 
 int hash(board_t value)
 {
-	return value%SIZE;
+	return (value/2)%SIZE;
 }
 
 int squaresexist(board_t currentboard, int tomove, direction_t direction)
